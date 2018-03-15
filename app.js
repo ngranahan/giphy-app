@@ -6,6 +6,7 @@ $(document).ready(function () {
 
     var userInput;
     var button;
+    var clearButton;
     var buttonText = ["Charlie Day", "Michelle Obama", "Harry Potter", "Ozzy Osborne"];
     var giphySearch;
     var state;
@@ -68,9 +69,15 @@ $(document).ready(function () {
         event.preventDefault();
 
         userInput = $("#userSearch").val().trim();
-        buttonText.push(userInput);
-        createButtons();
-
+        if (userInput === " ") {
+            console.log("Blank Space")
+        }
+        if (buttonText.includes(userInput) === false) {
+            buttonText.push(userInput);
+            $("#userSearch").val(" ");
+            createButtons();
+        }
+        
     });
 
     //function creates a button for each item in buttonText array
@@ -82,11 +89,27 @@ $(document).ready(function () {
             button.attr("data-name", buttonText[i]);
             button.text(buttonText[i]);
             $("#buttonDisplay").append(button);
-
         }
     }
 
+    //function creates a clear button to clear out the array
+    function clearButton() {
+        clearButton = $("<button>")
+        clearButton.addClass("btn btn-lg btn-clear");
+        clearButton.text("CLEAR BUTTONS");
+        $("#clearButtonDisplay").append(clearButton);
+    }
+
+    //function clear out the array when clear button is pressed
+    $("#clearButtonDisplay").on("click", function() {
+        $("#buttonDisplay").empty();
+        buttonText = [];
+    });
+        
+    
+
     $(document).on("click", ".giphy-button", giphySearch);
     createButtons();
+    clearButton();
 
 });
